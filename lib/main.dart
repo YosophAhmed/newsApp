@@ -15,12 +15,15 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
   await CacheHelper.init();
-  bool? dark = CacheHelper.getData(key: 'isDark');
-  runApp(MyApp(dark!));
+  bool? dark = CacheHelper.getData(
+    key: 'isDark',
+  );
+  runApp(
+    MyApp(dark!),
+  );
 }
 
 class MyApp extends StatelessWidget {
-
   final bool dark;
 
   const MyApp(this.dark);
@@ -28,20 +31,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => NewsCubit()..getBusiness()..changeTheme(
-        shared: dark,
-      ),
+      create: (BuildContext context) => NewsCubit()
+        ..getBusiness()
+        ..changeTheme(
+          shared: dark,
+        ),
       child: BlocConsumer<NewsCubit, NewsStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            themeMode: NewsCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
+            themeMode: NewsCubit.get(context).isDark
+                ? ThemeMode.dark
+                : ThemeMode.light,
             theme: ThemeData(
               primarySwatch: Colors.deepOrange,
               scaffoldBackgroundColor: Colors.white,
-              appBarTheme: AppBarTheme(
+              appBarTheme: const AppBarTheme(
                 titleSpacing: 20.0,
                 backgroundColor: Colors.white,
                 elevation: 0.0,
@@ -55,20 +61,20 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              iconTheme: IconThemeData(
+              iconTheme: const IconThemeData(
                 color: Colors.black,
               ),
-              floatingActionButtonTheme: FloatingActionButtonThemeData(
+              floatingActionButtonTheme: const FloatingActionButtonThemeData(
                 backgroundColor: Colors.deepOrange,
               ),
-              bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: Colors.deepOrange,
                 unselectedItemColor: Colors.grey,
                 backgroundColor: Colors.white,
                 elevation: 20.0,
               ),
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 bodyText1: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -87,16 +93,16 @@ class MyApp extends StatelessWidget {
                   statusBarColor: HexColor('333739'),
                   statusBarIconBrightness: Brightness.light,
                 ),
-                titleTextStyle: TextStyle(
+                titleTextStyle: const TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
-                iconTheme: IconThemeData(
+                iconTheme: const IconThemeData(
                   color: Colors.white,
                 ),
               ),
-              floatingActionButtonTheme: FloatingActionButtonThemeData(
+              floatingActionButtonTheme: const FloatingActionButtonThemeData(
                 backgroundColor: Colors.deepOrange,
               ),
               bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -106,7 +112,7 @@ class MyApp extends StatelessWidget {
                 backgroundColor: HexColor('333739'),
                 elevation: 20.0,
               ),
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 bodyText1: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,

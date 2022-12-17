@@ -1,7 +1,5 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/components/article_item.dart';
 
 import '../components/article_builder.dart';
 import '../cubit/cubit.dart';
@@ -13,10 +11,13 @@ class BusinessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NewsCubit, NewsStates>(
-      listener: (context, state){},
-      builder: (context, state){
+      listener: (context, state) {},
+      builder: (context, state) {
         var list = NewsCubit.get(context).business;
-        return ArticleBuilder(list, context);
+        return ArticleBuilder(
+          list,
+          context,
+        );
       },
     );
   }

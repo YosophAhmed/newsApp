@@ -6,6 +6,8 @@ import '../cubit/states.dart';
 
 class HomeLayout extends StatelessWidget {
 
+  const HomeLayout({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NewsCubit , NewsStates>(
@@ -14,7 +16,7 @@ class HomeLayout extends StatelessWidget {
         var cubit = NewsCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text(
+            title: const Text(
               'News App',
             ),
             actions: [
@@ -23,7 +25,7 @@ class HomeLayout extends StatelessWidget {
                     NewsCubit.get(context).changeTheme();
                     NewsCubit.get(context).getBusiness();
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.brightness_4_rounded,
                     color: Colors.black,
                     size: 30.0,
