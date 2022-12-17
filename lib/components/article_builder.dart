@@ -3,18 +3,38 @@ import 'package:flutter/material.dart';
 
 import 'article_item.dart';
 
-Widget ArticleBuilder(list, context) => ConditionalBuilder(
-  condition: list.length > 0,
-  builder: (context) => ListView.separated(
-    physics: BouncingScrollPhysics(),
-    itemBuilder: (context, index) => ArticleItem(list[index], context),
-    separatorBuilder: (context, index) => Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: Divider(
-        color: Colors.black,
+class ArticleBuilder extends StatelessWidget {
+  final List list;
+
+  final BuildContext context;
+
+  const ArticleBuilder({
+    Key? key,
+    required this.list,
+    required this.context,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ConditionalBuilder(
+      condition: list.isNotEmpty,
+      builder: (context) => ListView.separated(
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (context, index) =>
+            ArticleItem(article: list[index], context: context),
+        separatorBuilder: (context, index) => const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.0,
+          ),
+          child: Divider(
+            color: Colors.black,
+          ),
+        ),
+        itemCount: 10,
       ),
-    ),
-    itemCount: 10,
-  ),
-  fallback: (context) => Center(child: CircularProgressIndicator()),
-);
+      fallback: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}

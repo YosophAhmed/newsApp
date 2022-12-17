@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
 
-Widget ArticleItem(article, context) => Padding(
+class ArticleItem extends StatelessWidget {
+  final article;
+
+  final BuildContext context;
+
+  const ArticleItem({
+    Key? key,
+    required this.article,
+    required this.context,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -13,11 +26,13 @@ Widget ArticleItem(article, context) => Padding(
                 10.0,
               ),
               image: DecorationImage(
-                image: NetworkImage(
-                    '${article['urlToImage']}'),
+                image: NetworkImage('${article['urlToImage']}'),
                 fit: BoxFit.cover,
               ),
             ),
+          ),
+          const SizedBox(
+            width: 10,
           ),
           Expanded(
             child: Column(
@@ -48,3 +63,5 @@ Widget ArticleItem(article, context) => Padding(
         ],
       ),
     );
+  }
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/cubit/app_cubit.dart';
 import 'package:news_app/cubit/cubit.dart';
 
 import '../cubit/states.dart';
@@ -17,12 +18,12 @@ class HomeLayout extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text(
-              'News App',
+              'الأخبار',
             ),
             actions: [
               IconButton(
                   onPressed: (){
-                    NewsCubit.get(context).changeTheme();
+                    AppCubit.get(context).changeTheme();
                     NewsCubit.get(context).getBusiness();
                   },
                   icon: const Icon(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/cubit/states.dart';
-import 'package:news_app/network/local/cache_helper.dart';
 import 'package:news_app/screens/business_screen.dart';
 import 'package:news_app/screens/science_screen.dart';
 import 'package:news_app/screens/settings_screen.dart';
@@ -11,10 +10,11 @@ import '../network/remote/dio_helper.dart';
 
 class NewsCubit extends Cubit<NewsStates> {
   NewsCubit() : super(IntialNewsState());
+
   static NewsCubit get(context) => BlocProvider.of(context);
 
   int currentIndex = 0;
-  List<BottomNavigationBarItem> bottomNavBarItems = [
+  List<BottomNavigationBarItem> bottomNavBarItems = const [
     BottomNavigationBarItem(
       icon: Icon(
         Icons.business,
@@ -45,10 +45,12 @@ class NewsCubit extends Cubit<NewsStates> {
     currentIndex = index;
     if (index == 1) getsports();
     if (index == 2) getScience();
-    emit(BottomNavBarState());
+    emit(
+      BottomNavBarState(),
+    );
   }
 
-  List<Widget> screens = [
+  List<Widget> screens = const [
     BusinessScreen(),
     SportsScreen(),
     ScienceScreen(),
@@ -57,30 +59,42 @@ class NewsCubit extends Cubit<NewsStates> {
 
   List business = [];
 
-  void getBusiness() {
-    emit(GetBusinessNewsLoadingState());
-    DioHelper.getData(
-      url: 'v2/top-headlines',
-      query: {
-        'country': 'eg',
-        'category': 'business',
-        'apiKey': 'e9f56a587c424dec9b3c2fe29c3cfa8e',
-      },
-    ).then((value) {
-      business = value?.data['articles'];
-      print(business[0]['title']);
-      emit(GetBusinessNewsSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetBusinessNewsErrorsState(error.toString()));
-    });
+  void getBusiness() async {
+    if (business.isEmpty) {
+      emit(
+        GetBusinessNewsLoadingState(),
+      );
+      DioHelper.getData(
+        url: 'v2/top-headlines',
+        query: {
+          'country': 'eg',
+          'category': 'business',
+          'apiKey': 'e9f56a587c424dec9b3c2fe29c3cfa8e',
+        },
+      ).then((value) {
+        business = value.data['articles'];
+        emit(
+          GetBusinessNewsSuccessState(),
+        );
+      }).catchError((error) {
+        emit(
+          GetBusinessNewsErrorsState(
+            error.toString(),
+          ),
+        );
+      });
+    } else {
+      emit(
+        GetBusinessNewsSuccessState(),
+      );
+    }
   }
 
   List sports = [];
 
-  void getsports() {
+  void getsports() async {
     emit(GetSportsNewsLoadingState());
-    if (sports.length == 0) {
+    if (sports.isEmpty) {
       DioHelper.getData(
         url: 'v2/top-headlines',
         query: {
@@ -89,23 +103,27 @@ class NewsCubit extends Cubit<NewsStates> {
           'apiKey': 'e9f56a587c424dec9b3c2fe29c3cfa8e',
         },
       ).then((value) {
-        sports = value?.data['articles'];
-        print(sports[0]['title']);
+        sports = value.data['articles'];
         emit(GetSportsNewsSuccessState());
       }).catchError((error) {
-        print(error.toString());
-        emit(GetSportsNewsErrorsState(error.toString()));
+        emit(
+          GetSportsNewsErrorsState(
+            error.toString(),
+          ),
+        );
       });
     } else {
-      emit(GetSportsNewsSuccessState());
+      emit(
+        GetSportsNewsSuccessState(),
+      );
     }
   }
 
   List science = [];
 
-  void getScience() {
+  void getScience() async {
     emit(GetScienceNewsLoadingState());
-    if (science.length == 0) {
+    if (science.isEmpty) {
       DioHelper.getData(
         url: 'v2/top-headlines',
         query: {
@@ -114,30 +132,19 @@ class NewsCubit extends Cubit<NewsStates> {
           'apiKey': 'e9f56a587c424dec9b3c2fe29c3cfa8e',
         },
       ).then((value) {
-        science = value?.data['articles'];
-        print(science[0]['title']);
+        science = value.data['articles'];
         emit(GetScienceNewsSuccessState());
       }).catchError((error) {
-        print(error.toString());
-        emit(GetScienceNewsErrorsState(error.toString()));
+        emit(
+          GetScienceNewsErrorsState(
+            error.toString(),
+          ),
+        );
       });
     } else {
       emit(GetScienceNewsSuccessState());
     }
   }
 
-  bool isDark = false;
 
-  void changeTheme({bool? shared}) {
-    if (shared != null){
-      isDark = shared;
-      emit(ChangeAppTheme());
-    }
-    else{
-    isDark = !isDark;
-    CacheHelper.putData(key: 'isDark', value: isDark)
-        .then((value) => emit(ChangeAppTheme()));
-    }
-
-  }
 }

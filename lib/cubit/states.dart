@@ -30,8 +30,3 @@ class GetScienceNewsErrorsState extends NewsStates{
   final String error;
   GetScienceNewsErrorsState(this.error);
 }
-
-class ChangeAppTheme extends NewsStates{}
-
-
-
